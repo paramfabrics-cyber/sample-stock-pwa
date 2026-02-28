@@ -1,0 +1,48 @@
+{
+  "name": "Sample Stock System",
+  "short_name": "Stock System",
+  "description": "Internal inventory management for TL and Swatches departments",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#6D28D9",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "TL Department",
+      "short_name": "TL Dept",
+      "description": "Open TL fabric inventory",
+      "url": "/?dept=TL",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Swatches Department",
+      "short_name": "Swatches",
+      "description": "Open Swatches inventory",
+      "url": "/?dept=SWATCHES",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

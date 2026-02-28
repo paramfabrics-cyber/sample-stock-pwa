@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- ── PWA / Mobile viewport ───────────────────────────────────────────── -->
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover,
+               maximum-scale=1.0, user-scalable=no" />
+
+    <!-- ── Primary Meta ────────────────────────────────────────────────────── -->
+    <title>Sample Stock System</title>
+    <meta name="description"
+      content="Internal inventory management for TL and Swatches departments" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- ── PWA Manifest ────────────────────────────────────────────────────── -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- ── Theme color (matches manifest) ─────────────────────────────────── -->
+    <meta name="theme-color" content="#6D28D9" />
+
+    <!-- ── Apple PWA (iOS standalone) ─────────────────────────────────────── -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Stock System" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+
+    <!-- ── Favicon ─────────────────────────────────────────────────────────── -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+
+    <!-- ── Microsoft Tile (Edge / Windows) ────────────────────────────────── -->
+    <meta name="msapplication-TileImage" content="/icons/icon-192.png" />
+    <meta name="msapplication-TileColor" content="#6D28D9" />
+
+    <!-- ── Open Graph (share preview) ─────────────────────────────────────── -->
+    <meta property="og:title" content="Sample Stock System" />
+    <meta property="og:description" content="Internal inventory management" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/icons/icon-512.png" />
+
+    <!-- ── Preconnect for Google Fonts ────────────────────────────────────── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- ── PWA install / SW registration (inline, runs before React) ──────── -->
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw.js', { scope: '/' })
+            .then((reg) => {
+              // Check for updates every 60s when app is open
+              setInterval(() => reg.update(), 60_000);
+            })
+            .catch(() => { /* SW registration failed — app still works without it */ });
+        });
+      }
+
+      // Capture beforeinstallprompt for custom install banner
+      window._pwaInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        window._pwaInstallPrompt = e;
+        window.dispatchEvent(new Event('pwa-installable'));
+      });
+
+      // Track standalone mode
+      window._isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+    </script>
+
+    <!-- ── iOS safe-area / standalone full-screen CSS ─────────────────────── -->
+    <style>
+      /* Respect iOS notch / home-bar safe areas */
+      :root {
+        --sat: env(safe-area-inset-top, 0px);
+        --sab: env(safe-area-inset-bottom, 0px);
+        --sal: env(safe-area-inset-left, 0px);
+        --sar: env(safe-area-inset-right, 0px);
+      }
+      html, body {
+        margin: 0; padding: 0;
+        /* Prevent pull-to-refresh bounce on iOS */
+        overscroll-behavior: none;
+        /* Fill the whole screen in standalone */
+        min-height: 100dvh;
+        background: #ffffff;
+      }
+      #root {
+        min-height: 100dvh;
+        padding-top: var(--sat);
+        padding-bottom: var(--sab);
+        padding-left: var(--sal);
+        padding-right: var(--sar);
+      }
+      /* Hide browser UI scrollbar while keeping scroll functionality */
+      body { -webkit-overflow-scrolling: touch; }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- React entry point (Vite) -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
